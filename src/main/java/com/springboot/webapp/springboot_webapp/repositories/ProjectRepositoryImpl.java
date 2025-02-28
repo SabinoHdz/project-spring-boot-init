@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.github.javafaker.Faker;
+import com.springboot.webapp.springboot_webapp.models.dto.ProjectDto;
 import com.springboot.webapp.springboot_webapp.models.project.Project;
 
 @Repository
@@ -39,31 +40,50 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     @Override
     public List<Project> getFindAll() {
     
-       return projects;
+        return projects.stream().filter(Project::getIsActive).toList();
     }
 
     @Override
     public Project getProjectById(Long id) {
 
-        return projects.stream().filter(project-> project.getId().equals(id)).findFirst().orElse(null);
+        return projects.stream().filter(project -> project.getId().equals(id) && project.getIsActive()).findFirst()
+                .orElse(null);
     }
 
     @Override
     public Project createProject(Project project) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createProject'");
+        project.setId((long) (projects.size() + 1));
+        projects.add(project);
+        return project;
     }
 
     @Override
-    public Project updaProject(Long id, Project project) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updaProject'");
+    public Project updaProject(Long id, ProjectDto project) {
+        Project projectSearch = projects.stream().filter(project1 -> project1.getId().equals(id)).findFirst()
+                .orElse(null);
+        if (projectSearch != null) {
+            projectSearch.setName(project.getName() != null ? project.getName() : projectSearch.getName());
+            projectSearch.setDescription(
+                    project.getDescription() != null ? project.getDescription() : projectSearch.getDescription());
+            projectSearch.setStartDate(
+                    project.getStartDate() != null ? project.getStartDate() : projectSearch.getStartDate());
+            projectSearch.setCompleted(
+                    project.getCompleted() != null ? project.getCompleted() : projectSearch.getCompleted());
+            projectSearch
+                    .setIsActive(project.getIsActive() != null ? project.getIsActive() : projectSearch.getIsActive());
+
+        }
+        return projectSearch;
     }
 
     @Override
     public void deleteProject(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProject'");
+        Project project = getProjectById(id);
+        if (project != null) {
+            project.setIsActive(false);
+
+        }
+
     }
     
 }

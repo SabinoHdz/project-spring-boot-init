@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springboot.webapp.springboot_webapp.models.dto.ProjectDto;
 import com.springboot.webapp.springboot_webapp.models.project.Project;
 import com.springboot.webapp.springboot_webapp.repositories.ProjectRepositoryImpl;
 @Service
@@ -24,20 +25,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project createProject(Project project) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createProject'");
+        return projectRepository.createProject(project);
     }
 
     @Override
-    public Project updateProject(Long id, Project project) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProject'");
+    public Project updateProject(Long id, ProjectDto projectDto) {
+
+        return projectRepository.updaProject(id, projectDto);
     }
 
     @Override
     public void deleteProject(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteProject'");
+        projectRepository.deleteProject(id);
     }
     
 }

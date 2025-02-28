@@ -1,17 +1,20 @@
 package com.springboot.webapp.springboot_webapp.controllers.projects;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.webapp.springboot_webapp.models.dto.ProjectDto;
 import com.springboot.webapp.springboot_webapp.models.project.Project;
 import com.springboot.webapp.springboot_webapp.services.ProjectServiceImpl;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/projects")
@@ -27,23 +30,39 @@ public class ProjectController {
         return projectService.findById(id);
     }
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/only/{id}")
     public Project getProjectByIdValue(@PathVariable Long id) {
         return projectService.findById(id);
     }
 
     @PostMapping("/createProject")
-    public String createProject(){
-        return "Project created";
+    public Project createProject(@RequestParam String name, @RequestParam String description) {
+
+        System.err.println(name);
+        System.err.println(description);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date(System.currentTimeMillis());
+        String dateFormat = formatter.format(date);
+        Project project = new Project();
+        project.setName(name);
+        project.setDescription(description);
+        project.setStartDate(dateFormat);
+        project.setIsActive(true);
+        Project projectResponse = projectService.createProject(project);
+
+        return projectResponse;
     }
     @PostMapping("/updateProject")
-    public String updateProject(Long id){
-        return "Project with id: " + id + " updated";
-    }
-    
-    @PostMapping("/deleteProject")
+    public Project updateProject(@RequestParam Long id, @RequestBody ProjectDto projectDto) {
 
-    public String deleteProject(Long id){
-        return "Project with id: " + id + " deleted";
+        Project projectUpdate = projectService.updateProject(id, projectDto);
+        return projectUpdate;
+    }
+
+    @PostMapping("/deleteProject")
+    public String deleteProject(@RequestParam Long id) {
+        projectService.deleteProject(id);
+        return "Project deleted successfully";
     }
 }

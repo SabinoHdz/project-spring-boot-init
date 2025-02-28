@@ -1,24 +1,13 @@
-package com.springboot.webapp.springboot_webapp.models.project;
+package com.springboot.webapp.springboot_webapp.models.dto;
 
-public class Project {
-
-    private Long id;
+public class ProjectDto {
+ 
     private String name;
     private String description;
     private String startDate;
-    private Boolean completed = false;
+    private Boolean completed;
     private Boolean isActive;
 
-    public Project() {
-    }
-
-    public Project(Long id, String name, String description, String startDate, Boolean completed, Boolean isActive) {
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.completed = completed;
-        this.isActive = isActive;
-    }
 
     public String getName() {
         return name;
@@ -52,14 +41,6 @@ public class Project {
         this.completed = completed;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Boolean getIsActive() {
         return isActive;
     }
@@ -67,5 +48,8 @@ public class Project {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
+    
+
+
 
 }
