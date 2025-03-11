@@ -2,6 +2,7 @@ package com.springboot.webapp.springboot_webapp.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,9 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public User findById(Long id) {
-     return  users.stream().filter(u->u.getId().equals(id)).findFirst().orElse(null);
+    public Optional<User> findById(Long id) {
+        User user = users.stream().filter(u -> u.getId().equals(id)).findFirst().orElse(null);
+        return Optional.ofNullable(user);
     }
     
 }
