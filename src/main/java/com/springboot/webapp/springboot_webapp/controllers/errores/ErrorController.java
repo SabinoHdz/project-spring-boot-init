@@ -10,7 +10,8 @@ public class ErrorController {
     
     @GetMapping("/error")
     public String error() {
-        int value =100/0;
+        int value = Integer.parseInt("S");
+        System.out.println("value: " + value);
         return "status 200";
     }
 }

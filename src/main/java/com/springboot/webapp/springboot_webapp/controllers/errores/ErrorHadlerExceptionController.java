@@ -1,10 +1,13 @@
 package com.springboot.webapp.springboot_webapp.controllers.errores;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -43,6 +46,18 @@ public class ErrorHadlerExceptionController {
         error.setStatus(HttpStatus.NOT_FOUND.value());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(error);
+
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, Object> numberFormatException(NumberFormatException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("date", new Date().toString());
+        response.put("Error:", "Number format exception");
+        response.put("Message", ex.getMessage());
+        response.put("Status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return response;
 
     }
 
