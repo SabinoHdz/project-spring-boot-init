@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.github.javafaker.Faker;
+import com.springboot.webapp.springboot_webapp.exceptions.TaskNotFoundException;
 import com.springboot.webapp.springboot_webapp.models.project.Task;
 
 @Repository
@@ -42,7 +43,8 @@ public class TaskRepositoryImpl  implements TaskRepository{
 
     @Override
     public Task findById(Long id) {
-      return this.data.stream().filter(task -> task.getId().equals(id) && task.getIsActive()).findFirst().orElse(null);
+        return this.data.stream().filter(task -> task.getId().equals(id) && task.getIsActive()).findFirst()
+                .orElseThrow(() -> new TaskNotFoundException("Error: Task not found"));
     }
 
     @Override

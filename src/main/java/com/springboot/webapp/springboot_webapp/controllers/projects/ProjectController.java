@@ -3,6 +3,7 @@ package com.springboot.webapp.springboot_webapp.controllers.projects;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.webapp.springboot_webapp.exceptions.ProjectNotFoundException;
 import com.springboot.webapp.springboot_webapp.models.dto.ProjectDto;
 import com.springboot.webapp.springboot_webapp.models.project.Project;
 import com.springboot.webapp.springboot_webapp.services.ProjectServiceImpl;
@@ -27,13 +29,16 @@ public class ProjectController {
     }
     @RequestMapping("/getProjectById")
     public Project getProjectById(@RequestParam Long id) {
-        return projectService.findById(id);
+
+        Project project = projectService.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException("El proyecto no existe!!"));
+        return project;
     }
 
-    @RequestMapping("/only/{id}")
-    public Project getProjectByIdValue(@PathVariable Long id) {
-        return projectService.findById(id);
-    }
+    // @RequestMapping("/only/{id}")
+    // public Project getProjectByIdValue(@PathVariable Long id) {
+    // return projectService.findById(id);
+    // }
 
     @PostMapping("/createProject")
     public Project createProject(@RequestParam String name, @RequestParam String description) {

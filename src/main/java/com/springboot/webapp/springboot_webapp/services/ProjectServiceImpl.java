@@ -1,6 +1,7 @@
 package com.springboot.webapp.springboot_webapp.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project findById(Long id) {
-      return projectRepository.getProjectById(id);
+    public Optional<Project> findById(Long id) {
+        Project project = projectRepository.getProjectById(id);
+        return Optional.ofNullable(project);
     }
-
     @Override
     public Project createProject(Project project) {
         return projectRepository.createProject(project);

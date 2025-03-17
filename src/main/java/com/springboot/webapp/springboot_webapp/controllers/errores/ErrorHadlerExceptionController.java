@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import com.springboot.webapp.springboot_webapp.exceptions.ProjectNotFoundException;
+import com.springboot.webapp.springboot_webapp.exceptions.TaskNotFoundException;
 import com.springboot.webapp.springboot_webapp.exceptions.UserNotFoundException;
 import com.springboot.webapp.springboot_webapp.models.dto.error.Error;
 
@@ -72,6 +74,29 @@ public class ErrorHadlerExceptionController {
         response.put("Message", ex.getMessage());
         response.put("Status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         return response;
+
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, Object> taskNotFoundException(TaskNotFoundException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("date", new Date().toString());
+        response.put("Error:", "La tarea no existe");
+        response.put("Message", ex.getMessage());
+        response.put("Status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return response;
+    }
+
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<Error> noFound(ProjectNotFoundException ex) {
+        Error error = new Error();
+        error.setDate(new Date());
+        error.setError(" Api rest not found");
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(error);
 
     }
 
